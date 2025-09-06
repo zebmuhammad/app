@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Heart, Menu, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
@@ -6,7 +6,7 @@ import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
-import { categories } from '../data/mockData';
+import { productsAPI } from '../services/api';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,9 +28,22 @@ const Header = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [categories, setCategories] = useState([]);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const cats = await productsAPI.getCategories();
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -52,6 +65,8 @@ const Header = () => {
     if (result.success) {
       setShowLoginDialog(false);
       setFormData({ name: '', email: '', password: '' });
+    } else {
+      alert(result.error || 'Authentication failed');
     }
   };
 
@@ -103,7 +118,7 @@ const Header = () => {
               </Badge>
             )}
           </Link>
-          <Link to="/myebay" className="text-gray-600 hover:text-blue-600">My eBay</Link>
+          <Link to="/myeasycart" className="text-gray-600 hover:text-blue-600">My EasyCart</Link>
         </div>
       </div>
 
@@ -113,10 +128,14 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="text-3xl font-bold">
-              <span className="text-red-500">e</span>
-              <span className="text-blue-500">B</span>
-              <span className="text-yellow-500">a</span>
+              <span className="text-red-500">E</span>
+              <span className="text-blue-500">a</span>
+              <span className="text-yellow-500">s</span>
               <span className="text-green-500">y</span>
+              <span className="text-purple-500">C</span>
+              <span className="text-orange-500">a</span>
+              <span className="text-pink-500">r</span>
+              <span className="text-indigo-500">t</span>
             </div>
           </Link>
 
@@ -136,7 +155,7 @@ const Header = () => {
                   </DropdownMenuItem>
                   {categories.map((category) => (
                     <DropdownMenuItem key={category} onClick={() => setSelectedCategory(category)}>
-                      {category}
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -204,11 +223,11 @@ const Header = () => {
       {/* Category Navigation */}
       <div className="bg-gray-50 px-4 py-2 border-t">
         <div className="flex items-center space-x-6 max-w-7xl mx-auto overflow-x-auto">
-          {categories.map((category) => (
+          {['electronics', 'sneakers', 'clothing', 'collectibles', 'home', 'toys'].map((category) => (
             <Link
               key={category}
-              to={`/search?category=${encodeURIComponent(category)}`}
-              className="text-sm text-gray-600 hover:text-blue-600 whitespace-nowrap py-1"
+              to={`/search?category=${category}`}
+              className="text-sm text-gray-600 hover:text-blue-600 whitespace-nowrap py-1 capitalize"
             >
               {category}
             </Link>

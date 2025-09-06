@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -6,58 +7,82 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Mock authentication - in real app, this would connect to backend
   useEffect(() => {
-    const savedUser = localStorage.getItem('ebayUser');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-    setLoading(false);
+    const initAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      const savedUser = localStorage.getItem('user');
+      
+      if (token && savedUser) {
+        try {
+          // Verify token is still valid
+          const userData = await authAPI.getCurrentUser();
+          setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
+        } catch (error) {
+          // Token is invalid, clear storage
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+        }
+      }
+      setLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const login = async (email, password) => {
-    // Mock login - replace with actual API call
     try {
-      const mockUser = {
-        id: 1,
-        name: "John Doe",
-        email: email,
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-        rating: 4.9,
-        memberSince: "2019"
-      };
+      const response = await authAPI.login(email, password);
+      const { access_token, user: userData } = response;
       
-      localStorage.setItem('ebayUser', JSON.stringify(mockUser));
-      setUser(mockUser);
+      localStorage.setItem('authToken', access_token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      
       return { success: true };
     } catch (error) {
-      return { success: false, error: 'Login failed' };
+      console.error('Login error:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.detail || 'Login failed' 
+      };
     }
   };
 
   const register = async (name, email, password) => {
-    // Mock registration - replace with actual API call
     try {
-      const mockUser = {
-        id: Date.now(),
-        name: name,
-        email: email,
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-        rating: 5.0,
-        memberSince: "2025"
-      };
+      const response = await authAPI.register(name, email, password);
+      const { access_token, user: userData } = response;
       
-      localStorage.setItem('ebayUser', JSON.stringify(mockUser));
-      setUser(mockUser);
+      localStorage.setItem('authToken', access_token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      
       return { success: true };
     } catch (error) {
-      return { success: false, error: 'Registration failed' };
+      console.error('Registration error:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.detail || 'Registration failed' 
+      };
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('ebayUser');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      setUser(null);
+    }
+  };
+
+  const updateUser = (userData) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   return (
@@ -67,6 +92,7 @@ export const AuthProvider = ({ children }) => {
       login,
       register,
       logout,
+      updateUser,
       isAuthenticated: !!user
     }}>
       {children}
