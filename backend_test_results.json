@@ -1,0 +1,208 @@
+{
+  "summary": {
+    "total_tests": 23,
+    "passed": 20,
+    "failed": 3,
+    "success_rate": 86.95652173913044,
+    "timestamp": "2025-09-06T15:39:25.714750"
+  },
+  "results": [
+    {
+      "test": "Auth Registration",
+      "success": true,
+      "message": "User registered successfully",
+      "timestamp": "2025-09-06T15:39:25.215917",
+      "details": {
+        "user_id": "68bc55ad69d58a344cc5886c",
+        "user_name": "Sarah Johnson",
+        "token_type": "bearer"
+      }
+    },
+    {
+      "test": "Auth Login",
+      "success": false,
+      "message": "Login failed with status 401",
+      "timestamp": "2025-09-06T15:39:25.228323",
+      "details": {
+        "detail": "Incorrect email or password"
+      }
+    },
+    {
+      "test": "Auth Me",
+      "success": true,
+      "message": "Current user info retrieved successfully",
+      "timestamp": "2025-09-06T15:39:25.240485",
+      "details": {
+        "user_id": "68bc55ad69d58a344cc5886c",
+        "user_name": "Sarah Johnson"
+      }
+    },
+    {
+      "test": "Auth Logout",
+      "success": true,
+      "message": "User logged out successfully",
+      "timestamp": "2025-09-06T15:39:25.252486",
+      "details": {}
+    },
+    {
+      "test": "Auth Login",
+      "success": false,
+      "message": "Login failed with status 401",
+      "timestamp": "2025-09-06T15:39:25.263160",
+      "details": {
+        "detail": "Incorrect email or password"
+      }
+    },
+    {
+      "test": "Products List",
+      "success": true,
+      "message": "Retrieved 10 products",
+      "timestamp": "2025-09-06T15:39:25.291815",
+      "details": {
+        "total_count": 117,
+        "current_page": 1,
+        "total_pages": 12
+      }
+    },
+    {
+      "test": "Products Categories",
+      "success": true,
+      "message": "Retrieved 6 categories",
+      "timestamp": "2025-09-06T15:39:25.299656",
+      "details": {
+        "categories": [
+          "clothing",
+          "collectibles",
+          "electronics",
+          "home",
+          "sneakers"
+        ]
+      }
+    },
+    {
+      "test": "Products Search (iPhone)",
+      "success": true,
+      "message": "Found 2 products for 'iPhone'",
+      "timestamp": "2025-09-06T15:39:25.312711",
+      "details": {
+        "query": "iPhone",
+        "total_count": 2
+      }
+    },
+    {
+      "test": "Products Search (Nike)",
+      "success": true,
+      "message": "Found 5 products for 'Nike'",
+      "timestamp": "2025-09-06T15:39:25.324193",
+      "details": {
+        "query": "Nike",
+        "total_count": 5
+      }
+    },
+    {
+      "test": "Products Search (laptop)",
+      "success": true,
+      "message": "Found 0 products for 'laptop'",
+      "timestamp": "2025-09-06T15:39:25.374213",
+      "details": {
+        "query": "laptop",
+        "total_count": 0
+      }
+    },
+    {
+      "test": "Products Filter (Category)",
+      "success": true,
+      "message": "Found 5 electronics products",
+      "timestamp": "2025-09-06T15:39:25.395064",
+      "details": {}
+    },
+    {
+      "test": "Products Filter (Price)",
+      "success": true,
+      "message": "Found 5 products in $100-$500 range",
+      "timestamp": "2025-09-06T15:39:25.438433",
+      "details": {}
+    },
+    {
+      "test": "Product Detail",
+      "success": true,
+      "message": "Retrieved product details for CB2 Acrylic Coffee Table",
+      "timestamp": "2025-09-06T15:39:25.465566",
+      "details": {
+        "product_id": "68bc54740f3ab8e729748d27",
+        "product_name": "CB2 Acrylic Coffee Table",
+        "price": 399.0
+      }
+    },
+    {
+      "test": "User Profile Get",
+      "success": true,
+      "message": "Retrieved profile for Sarah Johnson",
+      "timestamp": "2025-09-06T15:39:25.513799",
+      "details": {}
+    },
+    {
+      "test": "User Profile Update",
+      "success": true,
+      "message": "Updated profile name to Updated Sarah Johnson",
+      "timestamp": "2025-09-06T15:39:25.524876",
+      "details": {}
+    },
+    {
+      "test": "Watchlist Add",
+      "success": true,
+      "message": "Product added to watchlist successfully",
+      "timestamp": "2025-09-06T15:39:25.554768",
+      "details": {}
+    },
+    {
+      "test": "Watchlist Get",
+      "success": true,
+      "message": "Retrieved watchlist with 1 items",
+      "timestamp": "2025-09-06T15:39:25.564300",
+      "details": {}
+    },
+    {
+      "test": "Watchlist Remove",
+      "success": true,
+      "message": "Product removed from watchlist successfully",
+      "timestamp": "2025-09-06T15:39:25.572984",
+      "details": {}
+    },
+    {
+      "test": "User Orders",
+      "success": true,
+      "message": "Retrieved 0 orders from user history",
+      "timestamp": "2025-09-06T15:39:25.622796",
+      "details": {}
+    },
+    {
+      "test": "Auction Bidding",
+      "success": true,
+      "message": "No auction items found to test bidding (this is acceptable)",
+      "timestamp": "2025-09-06T15:39:25.642520",
+      "details": {}
+    },
+    {
+      "test": "Order Creation",
+      "success": false,
+      "message": "No available products found for order creation",
+      "timestamp": "2025-09-06T15:39:25.700879",
+      "details": {}
+    },
+    {
+      "test": "Error Handling (Invalid ID)",
+      "success": true,
+      "message": "API correctly returned 400 for invalid product ID",
+      "timestamp": "2025-09-06T15:39:25.707702",
+      "details": {}
+    },
+    {
+      "test": "Error Handling (Unauthorized)",
+      "success": true,
+      "message": "API correctly returned 401 for invalid token",
+      "timestamp": "2025-09-06T15:39:25.714552",
+      "details": {}
+    }
+  ]
+}
